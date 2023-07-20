@@ -287,10 +287,10 @@ export class TokenValidationService {
     configuration: OpenIdConfiguration
   ): boolean {
     const isFromRefreshToken =
-      (dataIdToken.nonce === undefined || ignoreNonceAfterRefresh) &&
+      (dataIdToken.nonce === undefined || dataIdToken.params.nonce === undefined || ignoreNonceAfterRefresh) &&
       localNonce === TokenValidationService.refreshTokenNoncePlaceholder;
 
-    if (!isFromRefreshToken && dataIdToken.nonce !== localNonce) {
+    if (!isFromRefreshToken && (dataIdToken.nonce !== localNonce || dataIdToken.params.nonce !== localNonce)) {
       this.loggerService.logDebug(
         configuration,
         'Validate_id_token_nonce failed, dataIdToken.nonce: ' +
